@@ -8,7 +8,7 @@ type DisplayItemProps = {
   setItems: Dispatch<SetStateAction<Item[]>>;
 };
 
-export default function DisplayItem({
+export default function ShowEditItem({
   item,
   items,
   setItems,
