@@ -5,7 +5,7 @@ import { Item } from '../pages';
 type DisplayItemProps = {
   item: Item;
   items: Item[];
-  setItems: Dispatch<SetStateAction<Item[]>>;
+  setItems: Dispatch<SetStateAction<Item[] | null>>;
 };
 
 export default function ShowEditItem({
@@ -14,13 +14,33 @@ export default function ShowEditItem({
   setItems,
 }: DisplayItemProps) {
   const [showDetails, setShowDetails] = useState(false);
+  const [foto, setFoto] = useState<File | null>(null);
+
+  function submitImage(id: number) {
+    return (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      const formData = new FormData();
+      if (foto === null) {
+        // set error message
+        return;
+      }
+      formData.append('foto', foto);
+      formData.append('_method', 'PATCH');
+
+      fetch(`http://localhost/api/items/${id}`, {
+        method: 'POST',
+        body: formData,
+      }).then((response) => console.log(response));
+    };
+  }
   return (
     <>
       <div
         style={{
           display: 'grid',
           maxWidth: '960px',
-          gridTemplateColumns: '1fr 3fr 2fr 2fr',
+          gridTemplateColumns: '1fr 3fr 2fr 2fr 2fr',
           padding: '1rem',
         }}
         key={item.id}
@@ -43,6 +63,26 @@ export default function ShowEditItem({
         <div style={{ textDecoration: item.isDone ? 'line-through' : 'none' }}>
           {item.title}
         </div>
+        <form
+          method="post"
+          encType="multipart/form-data"
+          onSubmit={submitImage(item.id)}
+        >
+          <div>
+            <label htmlFor="file">Add an image</label>
+            <input
+              type="file"
+              id="file"
+              name="file"
+              multiple
+              onChange={(event) => setFoto(event.target.files![0])}
+            />
+          </div>
+          <div>
+            <button>Submit</button>
+          </div>
+        </form>
+
         <button
           style={{ width: '100px' }}
           onClick={() => setShowDetails(!showDetails)}
@@ -69,7 +109,7 @@ export default function ShowEditItem({
           paddingLeft: '1rem',
         }}
       >
-        Details: {item.details}
+        {item.details}
       </div>
     </>
   );
