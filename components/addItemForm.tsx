@@ -4,7 +4,7 @@ import { Item } from '../pages';
 type AddItemFormProps = {
   setShowAdd: Dispatch<SetStateAction<boolean>>;
   items: Item[];
-  setItems: Dispatch<SetStateAction<Item[]>>;
+  setItems: Dispatch<SetStateAction<Item[] | null>>;
 };
 
 export default function AddItemForm({
@@ -14,23 +14,14 @@ export default function AddItemForm({
 }: AddItemFormProps) {
   const [title, setTitle] = useState('');
   const [details, setDetails] = useState('');
-  // const [foto, setFoto] = useState<File | null>(null);
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    // const formData = new FormData();
-    // formData.append('foto', foto);
-    // formData.append('title', title);
-    // formData.append('details', details);
     fetch('http://localhost/api/items', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ title, details }),
-      // headers: {
-      //   'Content-Type': 'multipart/form-data',
-      // },
-      // body: formData,
     })
       .then((response) => response.json())
       .then((item) => setItems([...items, item]));
@@ -47,11 +38,6 @@ export default function AddItemForm({
         padding: '1rem',
       }}
     >
-      {/* <input
-        type="file"
-        name="foto"
-        onChange={(event) => setFoto(event.target.files[0])}
-      /> */}
       <input
         type="text"
         name="title"
