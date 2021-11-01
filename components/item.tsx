@@ -1,4 +1,5 @@
 import React, { SetStateAction, Dispatch } from 'react';
+import Image from 'next/image';
 import { useState } from 'react';
 import { Item } from '../pages';
 
@@ -31,7 +32,11 @@ export default function ShowEditItem({
       fetch(`http://localhost/api/items/${id}`, {
         method: 'POST',
         body: formData,
-      }).then((response) => console.log(response));
+      })
+        .then((response) => response.json())
+        .then((item) =>
+          setItems([...items.map((i) => (i.id === item.id ? item : i))])
+        );
     };
   }
   return (
@@ -40,7 +45,7 @@ export default function ShowEditItem({
         style={{
           display: 'grid',
           maxWidth: '960px',
-          gridTemplateColumns: '1fr 3fr 2fr 2fr 2fr',
+          gridTemplateColumns: '1fr 1fr 3fr 2fr 2fr 2fr',
           padding: '1rem',
         }}
         key={item.id}
@@ -59,6 +64,12 @@ export default function ShowEditItem({
               body: JSON.stringify({ isDone: item.isDone ? '1' : '0' }),
             });
           }}
+        />
+        <Image
+          src={`http://localhost/${item.foto}`}
+          alt={`foto for ${item.title}`}
+          width={40}
+          height={40}
         />
         <div style={{ textDecoration: item.isDone ? 'line-through' : 'none' }}>
           {item.title}
