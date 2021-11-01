@@ -17,9 +17,9 @@ export default function Home() {
   const [items, setItems] = useState<Item[] | null>(null);
   const [showAdd, setShowAdd] = useState(false);
   useEffect(() => {
-    fetch('http://localhost:80/api/items')
+    fetch('http://localhost/api/items')
       .then((response) => response.json())
-      .then((data) => setItems(data));
+      .then((items) => setItems(items));
   }, []);
   return (
     <div>
@@ -42,7 +42,7 @@ export default function Home() {
           : null}
         {showAdd ? (
           <AddItemForm
-            items={items}
+            items={items!}
             setItems={setItems}
             setShowAdd={setShowAdd}
           />
