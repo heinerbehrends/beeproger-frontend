@@ -1,7 +1,8 @@
-import React, { SetStateAction, Dispatch } from 'react';
-import Image from 'next/image';
+import React, { SetStateAction, Dispatch, FormEvent } from 'react';
 import { useState } from 'react';
 import { Item } from '../pages';
+import Checkbox from './checkbox';
+import ItemImage from './itemImage';
 
 type DisplayItemProps = {
   item: Item;
@@ -18,7 +19,7 @@ export default function ShowEditItem({
   const [foto, setFoto] = useState<File | null>(null);
 
   function submitImage(id: number) {
-    return (event: React.FormEvent<HTMLFormElement>) => {
+    return (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
       const formData = new FormData();
@@ -45,32 +46,13 @@ export default function ShowEditItem({
         style={{
           display: 'grid',
           maxWidth: '960px',
-          gridTemplateColumns: '1fr 1fr 3fr 2fr 2fr 2fr',
+          gridTemplateColumns: '1fr 40px 3fr 2fr 2fr 2fr',
           padding: '1rem',
         }}
         key={item.id}
       >
-        <input
-          type="checkbox"
-          checked={item.isDone}
-          onChange={() => {
-            item.isDone = !item.isDone;
-            setItems([...items.map((i) => (i.id !== item.id ? i : item))]);
-            fetch(`http://localhost/api/items/${item.id}`, {
-              method: 'PATCH',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ isDone: item.isDone ? '1' : '0' }),
-            });
-          }}
-        />
-        <Image
-          src={`http://localhost/${item.foto}`}
-          alt={`foto for ${item.title}`}
-          width={40}
-          height={40}
-        />
+        <ItemImage item={item} />
+        <Checkbox item={item} items={items} setItems={setItems} />
         <div style={{ textDecoration: item.isDone ? 'line-through' : 'none' }}>
           {item.title}
         </div>
