@@ -12,19 +12,22 @@ type CheckboxProps = {
 
 const StyledCheckbox = styled(Root, {
   all: 'unset',
-  backgroundColor: 'gray',
-  width: 40,
-  height: 40,
+  backgroundColor: '$violet2',
+  width: 60,
+  height: 60,
   borderRadius: '50%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  boxShadow: '$outline',
+  cursor: 'pointer',
+  '&:focus': { boxShadow: `0 0 0 2px $colors$violet11` },
 });
 const StyledIndicator = styled(Indicator, {
-  color: 'white',
+  color: '$green11',
   '& svg': {
-    height: 25,
-    width: 25,
+    height: 40,
+    width: 40,
   },
 });
 
