@@ -9,5 +9,9 @@ export const { styled, css } = createStitches({
       ...mauve,
       ...blackA,
     },
+    shadows: {
+      outline: `0 0 0 1px $colors$violet7`,
+      focus: `0 0 0 2px $colors$violet8`,
+    },
   },
 });
