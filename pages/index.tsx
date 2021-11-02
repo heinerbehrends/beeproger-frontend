@@ -7,7 +7,7 @@ export type Item = {
   id: number;
   title: string;
   details: string;
-  isDone: boolean;
+  isDone: number;
   foto: string;
   created_at: string;
   updated_at: string;
