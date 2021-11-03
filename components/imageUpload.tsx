@@ -19,18 +19,22 @@ export default function ImageUpload({ setFoto }: ImageUploadProps) {
   return (
     <Fieldset>
       <Label>Add an image</Label>
-      <Button tabIndex={0} as="label" htmlFor="file-upload">
+      <Button
+        as="label"
+        htmlFor="file-upload"
+        css={{ '&:focus-within': { boxShadow: '$focus' } }}
+      >
         Browse
+        <input
+          type="file"
+          id="file-upload"
+          // style={{ display: 'none' }}
+          onChange={(event) => {
+            setFoto(event.target.files![0]);
+            setPreview(URL.createObjectURL(event.target.files![0]));
+          }}
+        />
       </Button>
-      <input
-        type="file"
-        id="file-upload"
-        style={{ display: 'none' }}
-        onChange={(event) => {
-          setFoto(event.target.files![0]);
-          setPreview(URL.createObjectURL(event.target.files![0]));
-        }}
-      />
       {preview ? (
         <NextImage
           src={preview}
@@ -38,7 +42,7 @@ export default function ImageUpload({ setFoto }: ImageUploadProps) {
           width="100"
           height="100"
           className={imageStyles()}
-        ></NextImage>
+        />
       ) : null}
     </Fieldset>
   );
