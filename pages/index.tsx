@@ -1,7 +1,9 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import AddItemForm from '../components/addItemForm';
+import { Button } from '../components/buttonStyles';
 import ShowEditItem from '../components/item';
+import { styled } from '../stitchesConfig';
 
 export type Item = {
   id: number;
@@ -12,6 +14,16 @@ export type Item = {
   created_at: string;
   updated_at: string;
 };
+
+const ItemsContainer = styled('main', {
+  display: 'grid',
+  maxWidth: '960px',
+  gridTemplateColumns: '1fr 1fr 3fr 6fr',
+  gridGap: '1rem',
+  padding: '1rem',
+  margin: '0 auto',
+  marginTop: '4rem',
+});
 
 export default function Home() {
   const [items, setItems] = useState<Item[] | null>(null);
@@ -29,7 +41,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
+      <ItemsContainer>
         {items
           ? items.map((item) => (
               <ShowEditItem
@@ -40,24 +52,23 @@ export default function Home() {
               />
             ))
           : null}
-        {showAdd ? (
-          <AddItemForm
-            items={items!}
-            setItems={setItems}
-            setShowAdd={setShowAdd}
-          />
-        ) : null}
-        {showAdd ? null : (
-          <button
-            style={{ marginLeft: '1rem' }}
-            onClick={() => setShowAdd(true)}
-          >
-            Add
-          </button>
-        )}
-      </main>
-
-      <footer></footer>
+      </ItemsContainer>
+      {showAdd ? (
+        <AddItemForm
+          items={items!}
+          setItems={setItems}
+          setShowAdd={setShowAdd}
+        />
+      ) : null}
+      {showAdd ? null : (
+        <Button
+          variant="green"
+          css={{ marginLeft: '1rem', marginTop: '1rem' }}
+          onClick={() => setShowAdd(true)}
+        >
+          Add an item
+        </Button>
+      )}
     </div>
   );
 }
