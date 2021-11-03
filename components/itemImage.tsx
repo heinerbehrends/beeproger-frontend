@@ -8,7 +8,7 @@ const imageStyles = css({
   borderRadius: '50%',
 });
 
-const ImageContainer = styled('div', {
+export const ImageContainer = styled('div', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
