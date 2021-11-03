@@ -1,4 +1,10 @@
-import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FocusEvent,
+  Dispatch,
+  SetStateAction,
+  useState,
+} from 'react';
 import {
   Dialog,
   DialogTrigger,
@@ -11,8 +17,8 @@ import {
 import { Item } from '../pages';
 import { styled } from '@stitches/react';
 import { Button, IconButton } from './buttonStyles';
-import { Fieldset, Input, Label, TextArea } from './formStyles';
-import { Cross2Icon } from '@radix-ui/react-icons';
+import { Fieldset, Input, Label, Message, TextArea } from './formStyles';
+import { Cross2Icon, InfoCircledIcon } from '@radix-ui/react-icons';
 
 type DetailsDialogProps = {
   item: Item;
@@ -30,8 +36,13 @@ export default function EditDialog({
 }: DetailsDialogProps) {
   const [title, setTitle] = useState(item.title);
   const [details, setDetails] = useState(item.details);
+  const [message, setMessage] = useState('');
 
   function submitTitleDetails() {
+    // validate title length
+    if (title.length < 1) {
+      return;
+    }
     // optimistic ui update
     setItems([
       ...items.map((i) => (i.id !== item.id ? i : { ...item, title, details })),
@@ -46,6 +57,7 @@ export default function EditDialog({
     });
   }
   function updateTitle(event: ChangeEvent<HTMLInputElement>) {
+    setMessage('');
     setTitle(event.target.value);
   }
   function updateDetails(event: ChangeEvent<HTMLTextAreaElement>) {
@@ -65,7 +77,16 @@ export default function EditDialog({
         </DialogDescription>
         <Fieldset>
           <Label htmlFor="title">Title</Label>
-          <Input id="title" value={title} onChange={updateTitle} />
+          <Input
+            required
+            id="title"
+            value={title}
+            onChange={updateTitle}
+            onFocus={(event) => event.target.select()}
+            onBlur={() => {
+              if (title.length < 1) setMessage('Please enter a title');
+            }}
+          />
         </Fieldset>
         <Fieldset>
           <Label
@@ -80,16 +101,26 @@ export default function EditDialog({
             rows={6}
             id="details"
             value={details}
+            onFocus={(event: FocusEvent<HTMLTextAreaElement>) =>
+              event.target.select()
+            }
             onChange={updateDetails}
           />
         </Fieldset>
-        <Flex css={{ marginTop: 25, justifyContent: 'flex-end' }}>
-          <DialogClose asChild onClick={submitTitleDetails}>
-            <Button aria-label="Close" variant="green">
-              Save changes
-            </Button>
-          </DialogClose>
-        </Flex>
+        {message ? (
+          <Message>
+            <InfoCircledIcon />
+            {message}
+          </Message>
+        ) : (
+          <Flex css={{ marginTop: 25, justifyContent: 'flex-end' }}>
+            <DialogClose asChild onClick={submitTitleDetails}>
+              <Button aria-label="Close" variant="green">
+                Save changes
+              </Button>
+            </DialogClose>
+          </Flex>
+        )}
         <DialogClose asChild>
           <IconButton>
             <Cross2Icon />
