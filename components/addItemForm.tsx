@@ -1,5 +1,11 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Item } from '../pages';
+import { Button } from './buttonStyles';
+import { StyledCheckbox } from './checkbox';
+import { Flex } from './editDialog';
+import { ImageContainer } from './itemImage';
+import { GridForm, Input } from './formStyles';
+import { ImageIcon } from '@radix-ui/react-icons';
 
 type AddItemFormProps = {
   setShowAdd: Dispatch<SetStateAction<boolean>>;
@@ -13,7 +19,7 @@ export default function AddItemForm({
   setItems,
 }: AddItemFormProps) {
   const [title, setTitle] = useState('');
-  const [details, setDetails] = useState('');
+
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     fetch('http://localhost/api/items', {
@@ -21,39 +27,38 @@ export default function AddItemForm({
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ title, details }),
+      body: JSON.stringify({
+        title,
+        details: 'Add a more detailed description',
+      }),
     })
       .then((response) => response.json())
       .then((item) => setItems([...items, item]));
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{
-        display: 'grid',
-        maxWidth: '960px',
-        gridTemplateColumns: '1fr 1fr 1fr',
-        gridGap: '1rem',
-        padding: '1rem',
-      }}
-    >
-      <input
-        type="text"
-        name="title"
-        aria-label="title"
-        placeholder="Title"
+    <GridForm onSubmit={handleSubmit}>
+      <StyledCheckbox />
+      <ImageContainer>
+        <ImageIcon />
+      </ImageContainer>
+      <Input
         onChange={(event) => setTitle(event.target.value)}
+        autoFocus
+        css={{ alignSelf: 'center', width: '85%' }}
       />
-      <input
-        type="text"
-        name="details"
-        aria-label="details"
-        placeholder="Details"
-        onChange={(event) => setDetails(event.target.value)}
-      />
-      <button type="submit">Add item</button>
-      <button onClick={() => setShowAdd(false)}>Cancel</button>
-    </form>
+      <Flex
+        css={{
+          height: '60px',
+          alignItems: 'center',
+          gap: '1rem',
+        }}
+      >
+        <Button type="submit" variant={'green'}>
+          Create
+        </Button>
+        <Button onClick={() => setShowAdd(false)}>Cancel</Button>
+      </Flex>
+    </GridForm>
   );
 }
