@@ -1,4 +1,4 @@
-import { violet, green, mauve, blackA } from '@radix-ui/colors';
+import { violet, green, blackA, orange } from '@radix-ui/colors';
 import { createStitches } from '@stitches/react';
 
 export const { styled, css } = createStitches({
@@ -6,7 +6,7 @@ export const { styled, css } = createStitches({
     colors: {
       ...violet,
       ...green,
-      ...mauve,
+      ...orange,
       ...blackA,
     },
     shadows: {
