@@ -30,6 +30,18 @@ export const Button = styled('button', {
         '&:hover': { backgroundColor: '$green5' },
         '&:focus': { boxShadow: `0 0 0 2px $colors$green7` },
       },
+      red: {
+        backgroundColor: '$red4',
+        color: '$red11',
+        '&:hover': { backgroundColor: '$red5' },
+        '&:focus': { boxShadow: `0 0 0 2px $colors$red7` },
+      },
+      mauve: {
+        backgroundColor: '$mauve4',
+        color: '$mauve11',
+        '&:hover': { backgroundColor: '$mauve5' },
+        '&:focus': { boxShadow: `0 0 0 2px $colors$mauve7` },
+      },
     },
   },
   defaultVariants: {
