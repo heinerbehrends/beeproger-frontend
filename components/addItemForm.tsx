@@ -8,7 +8,7 @@ import React, {
 import { InfoCircledIcon } from '@radix-ui/react-icons';
 import { Item } from '../pages';
 import { Button } from './buttonStyles';
-import { Flex } from './editDialog';
+import { Flex } from './pageStyles';
 import { GridForm, Input, Message } from './formStyles';
 
 type AddItemFormProps = {
@@ -39,7 +39,7 @@ export default function AddItemForm({
       },
       body: JSON.stringify({
         title,
-        details: 'Add a more detailed description',
+        details: 'Add a more detailed description.',
       }),
     })
       .then((response) => response.json())
@@ -54,9 +54,10 @@ export default function AddItemForm({
           onKeyDown={(event) => {
             if (event.key === 'Escape') setShowAdd(false);
           }}
-          onBlur={() => {
+          onBlur={(event) => {
             if (title.length < 1) {
-              setMessage('Please enter a title');
+              setMessage('Please enter a title.');
+              event.target.focus();
             }
           }}
           onChange={(event) => {
