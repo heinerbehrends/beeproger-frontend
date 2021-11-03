@@ -20,7 +20,7 @@ export const Button = styled('button', {
         color: '$violet11',
         border: '1px solid $colors$violet8',
         boxShadow: `0 2px 10px $colors$blackA7`,
-        '&:hover': { backgroundColor: '$colors$mauve3' },
+        '&:hover': { backgroundColor: '$colors$violet3' },
         '&:focus': { boxShadow: `0 0 0 2px $colors$violet11` },
       },
       green: {
