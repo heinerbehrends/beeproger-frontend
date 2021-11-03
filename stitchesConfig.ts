@@ -14,6 +14,7 @@ export const { styled, css } = createStitches({
     shadows: {
       outline: `0 0 0 1px $colors$violet7`,
       focus: `0 0 0 2px $colors$violet8`,
+      soft: `0 2px 10px $colors$blackA7`,
     },
   },
 });
