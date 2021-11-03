@@ -19,27 +19,20 @@ import { styled } from '@stitches/react';
 import { Button, IconButton } from './buttonStyles';
 import { Fieldset, Input, Label, Message, TextArea } from './formStyles';
 import { Cross2Icon, InfoCircledIcon } from '@radix-ui/react-icons';
+import { Flex } from './pageStyles';
 
-type DetailsDialogProps = {
+export type DialogProps = {
   item: Item;
   items: Item[];
   setItems: Dispatch<SetStateAction<Item[] | null>>;
 };
 
-export const Flex = styled('div', { display: 'flex' });
-export const Box = styled('div', {});
-
-export default function EditDialog({
-  item,
-  items,
-  setItems,
-}: DetailsDialogProps) {
+export default function EditDialog({ item, items, setItems }: DialogProps) {
   const [title, setTitle] = useState(item.title);
   const [details, setDetails] = useState(item.details);
   const [message, setMessage] = useState('');
 
   function submitTitleDetails() {
-    // validate title length
     if (title.length < 1) {
       return;
     }
@@ -84,7 +77,7 @@ export default function EditDialog({
             onChange={updateTitle}
             onFocus={(event) => event.target.select()}
             onBlur={() => {
-              if (title.length < 1) setMessage('Please enter a title');
+              if (title.length < 1) setMessage('Please enter a title.');
             }}
           />
         </Fieldset>
