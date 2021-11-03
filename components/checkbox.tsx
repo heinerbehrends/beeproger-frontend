@@ -10,7 +10,7 @@ type CheckboxProps = {
   setItems: Dispatch<SetStateAction<Item[] | null>>;
 };
 
-const StyledCheckbox = styled(Root, {
+export const StyledCheckbox = styled(Root, {
   all: 'unset',
   backgroundColor: '$violet2',
   width: 60,
