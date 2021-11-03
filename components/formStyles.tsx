@@ -38,7 +38,23 @@ export const TextArea = styled('textarea', InputStyles);
 
 export const GridForm = styled('form', {
   display: 'grid',
-  gridTemplateColumns: '1fr 1fr 3fr 6fr',
-  paddingLeft: '16px',
-  gridGap: '1rem',
+  gridTemplateColumns: '5fr 6fr',
+  gridGap: '48px',
+  paddingBottom: '4rem',
+  marginTop: '1rem',
+});
+
+export const Message = styled('span', {
+  alignSelf: 'center',
+  display: 'flex',
+  alignItems: 'center',
+  backgroundColor: '$orange3',
+  padding: '8px 32px',
+  borderRadius: '4px',
+  border: '1px solid $colors$orange11',
+  '& svg': {
+    paddingRight: '8px',
+    height: 25,
+    width: 25,
+  },
 });
