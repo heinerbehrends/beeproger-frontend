@@ -1,10 +1,11 @@
 import React, { SetStateAction, Dispatch } from 'react';
 import { Item } from '../pages';
 import Checkbox from './checkbox';
-import EditDialog, { Flex } from './editDialog';
+import EditDialog from './editDialog';
 import UploadDialog from './uploadDialog';
+import DeleteDialog from './deleteDialog';
+import { Flex } from './pageStyles';
 import ItemImage from './itemImage';
-import { Button } from './buttonStyles';
 import Title from './title';
 
 type DisplayItemProps = {
@@ -33,16 +34,7 @@ export default function ShowEditItem({
         <UploadDialog item={item} items={items} setItems={setItems} />
 
         <EditDialog item={item} setItems={setItems} items={items} />
-        <Button
-          onClick={() => {
-            setItems([...items.filter((i) => i.id !== item.id)]);
-            fetch(`http://localhost/api/items/${item.id}`, {
-              method: 'DELETE',
-            });
-          }}
-        >
-          Delete
-        </Button>
+        <DeleteDialog item={item} setItems={setItems} items={items} />
       </Flex>
     </React.Fragment>
   );
