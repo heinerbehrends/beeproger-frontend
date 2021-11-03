@@ -6,7 +6,7 @@ import { css } from '../stitchesConfig';
 
 type ImageUploadProps = {
   setFoto: Dispatch<SetStateAction<File | null>>;
-  foto: File | null;
+  setMessage: Dispatch<SetStateAction<string>>;
 };
 
 const imageStyles = css({
@@ -14,7 +14,7 @@ const imageStyles = css({
   borderRadius: '50%',
 });
 
-export default function ImageUpload({ setFoto }: ImageUploadProps) {
+export default function ImageUpload({ setFoto, setMessage }: ImageUploadProps) {
   const [preview, setPreview] = useState<string | null>(null);
   return (
     <Fieldset>
@@ -26,10 +26,13 @@ export default function ImageUpload({ setFoto }: ImageUploadProps) {
       >
         Browse
         <input
+          onBlur={() => {
+            if (!preview) setMessage('Please browse to upload an image.');
+          }}
           type="file"
           id="file-upload"
-          // style={{ display: 'none' }}
           onChange={(event) => {
+            setMessage('');
             setFoto(event.target.files![0]);
             setPreview(URL.createObjectURL(event.target.files![0]));
           }}
