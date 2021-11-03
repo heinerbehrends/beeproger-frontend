@@ -7,7 +7,8 @@ import {
   Description,
   Close,
 } from '@radix-ui/react-dialog';
-import { keyframes, styled } from '@stitches/react';
+import { keyframes } from '@stitches/react';
+import { styled, css } from '../stitchesConfig';
 import { ReactNode } from 'react';
 
 const overlayShow = keyframes({
@@ -20,7 +21,7 @@ const contentShow = keyframes({
   '100%': { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' },
 });
 
-const StyledOverlay = styled(Overlay, {
+export const overlayStyles = css({
   backgroundColor: '$blackA9',
   position: 'fixed',
   inset: 0,
@@ -28,6 +29,8 @@ const StyledOverlay = styled(Overlay, {
     animation: `${overlayShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
   },
 });
+
+export const StyledOverlay = styled(Overlay, overlayStyles);
 
 function DialogRoot({ children, ...props }: { children: ReactNode }) {
   return (
@@ -38,7 +41,7 @@ function DialogRoot({ children, ...props }: { children: ReactNode }) {
   );
 }
 
-const StyledContent = styled(Content, {
+export const contentStyles = css({
   backgroundColor: 'white',
   borderRadius: 6,
   boxShadow:
@@ -58,19 +61,25 @@ const StyledContent = styled(Content, {
   '&:focus': { outline: 'none' },
 });
 
-const StyledTitle = styled(Title, {
+const StyledContent = styled(Content, contentStyles);
+
+export const titleStyles = css({
   margin: 0,
   fontWeight: 500,
   color: 'black',
   fontSize: 17,
 });
 
-const StyledDescription = styled(Description, {
+const StyledTitle = styled(Title, titleStyles);
+
+export const descriptionStyles = css({
   margin: '10px 0 20px',
   color: 'black',
   fontSize: 15,
   lineHeight: 1.5,
 });
+
+const StyledDescription = styled(Description, descriptionStyles);
 
 export const Dialog = DialogRoot;
 export const DialogTrigger = Trigger;
