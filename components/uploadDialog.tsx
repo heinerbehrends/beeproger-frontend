@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogTrigger,
@@ -8,32 +8,20 @@ import {
   DialogDescription,
   DialogClose,
 } from './dialogStyles';
-import { Item } from '../pages';
-import { styled } from '@stitches/react';
 import { Button, IconButton } from './buttonStyles';
 import ImageUpload from './imageUpload';
-import { Cross2Icon } from '@radix-ui/react-icons';
+import { Cross2Icon, InfoCircledIcon } from '@radix-ui/react-icons';
+import { Message } from './formStyles';
+import { Flex } from './pageStyles';
+import { DialogProps } from './editDialog';
 
-type DetailsDialogProps = {
-  item: Item;
-  items: Item[];
-  setItems: Dispatch<SetStateAction<Item[] | null>>;
-};
-
-export const Flex = styled('div', { display: 'flex' });
-export const Box = styled('div', {});
-
-export default function UploadDialog({
-  item,
-  items,
-  setItems,
-}: DetailsDialogProps) {
+export default function UploadDialog({ item, items, setItems }: DialogProps) {
   const [foto, setFoto] = useState<File | null>(null);
+  const [message, setMessage] = useState('');
 
   function submitImage() {
     const formData = new FormData();
     if (foto === null) {
-      // set error message
       return;
     }
     formData.append('foto', foto);
@@ -62,14 +50,21 @@ export default function UploadDialog({
             Browse your local computer to upload an image. Click save when
             you&apos;re done.
           </DialogDescription>
-          <ImageUpload foto={foto} setFoto={setFoto} />
-          <Flex css={{ marginTop: 25, justifyContent: 'flex-end' }}>
-            <DialogClose asChild tabIndex={0} onClick={submitImage}>
-              <Button aria-label="Close" variant="green">
-                Save changes
-              </Button>
-            </DialogClose>
-          </Flex>
+          <ImageUpload setMessage={setMessage} setFoto={setFoto} />
+          {message ? (
+            <Message>
+              <InfoCircledIcon />
+              {message}
+            </Message>
+          ) : (
+            <Flex css={{ marginTop: 25, justifyContent: 'flex-end' }}>
+              <DialogClose asChild tabIndex={0} onClick={submitImage}>
+                <Button aria-label="Close" variant="green">
+                  Save changes
+                </Button>
+              </DialogClose>
+            </Flex>
+          )}
           <DialogClose asChild>
             <IconButton>
               <Cross2Icon />
