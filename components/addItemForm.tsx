@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, FormEvent, SetStateAction, useState } from 'react';
 import { Item } from '../pages';
 import { Button } from './buttonStyles';
 import { StyledCheckbox } from './checkbox';
@@ -20,7 +20,7 @@ export default function AddItemForm({
 }: AddItemFormProps) {
   const [title, setTitle] = useState('');
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     fetch('http://localhost/api/items', {
       method: 'POST',
@@ -43,6 +43,9 @@ export default function AddItemForm({
         <ImageIcon />
       </ImageContainer>
       <Input
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') setShowAdd(false);
+        }}
         onChange={(event) => setTitle(event.target.value)}
         autoFocus
         css={{ alignSelf: 'center', width: '85%' }}
