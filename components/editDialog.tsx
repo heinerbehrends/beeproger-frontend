@@ -11,7 +11,7 @@ import {
 import { Item } from '../pages';
 import { styled } from '@stitches/react';
 import { Button, IconButton } from './buttonStyles';
-import { Fieldset, Input, Label, TextArea } from './detailsFormStyles';
+import { Fieldset, Input, Label, TextArea } from './formStyles';
 import { Cross2Icon } from '@radix-ui/react-icons';
 
 type DetailsDialogProps = {
