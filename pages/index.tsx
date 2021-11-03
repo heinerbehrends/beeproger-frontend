@@ -1,3 +1,4 @@
+import { PlusCircledIcon } from '@radix-ui/react-icons';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import AddItemForm from '../components/addItemForm';
@@ -57,10 +58,16 @@ export default function Home() {
             css={{
               marginTop: '2rem',
               marginBottom: '4rem',
+              padding: '6px 18px',
+              '& svg': {
+                width: 20,
+                height: 20,
+                marginRight: '8px',
+              },
             }}
             onClick={() => setShowAdd(true)}
           >
-            Add an item
+            <PlusCircledIcon /> Add an item
           </Button>
         )}
       </Container>
