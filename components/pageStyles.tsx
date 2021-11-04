@@ -3,7 +3,8 @@ import { styled } from '../stitchesConfig';
 export const ItemsContainer = styled('main', {
   display: 'grid',
   gridTemplateColumns: '1fr 1fr 3fr 6fr',
-  gridGap: '1rem',
+  columnGap: '1rem',
+  rowGap: '2rem',
   marginTop: '2rem',
 });
 export const Container = styled('div', {
