@@ -41,7 +41,12 @@ export default function UploadDialog({ item, items, setItems }: DialogProps) {
     <Flex css={{ justifyContent: 'flex-end' }}>
       <Dialog>
         <DialogTrigger asChild>
-          <Button>Upload an image</Button>
+          <Button
+            disabled={!!item.isDone}
+            variant={item.isDone ? 'disabled' : 'violet'}
+          >
+            {item.foto ? 'Change the image' : 'Upload an image'}
+          </Button>
         </DialogTrigger>
         <DialogOverlay />
         <DialogContent>

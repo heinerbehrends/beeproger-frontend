@@ -40,7 +40,6 @@ export default function EditDialog({ item, items, setItems }: DialogProps) {
     setItems([
       ...items.map((i) => (i.id !== item.id ? i : { ...item, title, details })),
     ]);
-    // request to update db
     fetch(`http://localhost/api/items/${item.id}`, {
       method: 'PATCH',
       headers: {
@@ -59,7 +58,12 @@ export default function EditDialog({ item, items, setItems }: DialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Edit the item</Button>
+        <Button
+          disabled={!!item.isDone}
+          variant={item.isDone ? 'disabled' : 'violet'}
+        >
+          Edit the item
+        </Button>
       </DialogTrigger>
       <DialogOverlay />
       <DialogContent>
