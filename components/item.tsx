@@ -23,7 +23,7 @@ export default function ShowEditItem({
     <React.Fragment key={item.id}>
       <Checkbox item={item} items={items} setItems={setItems} />
       <ItemImage item={item} />
-      <Title item={item} />
+      <Title completed={!!item.isDone}>{item.title}</Title>
       <Flex
         css={{
           height: '60px',
