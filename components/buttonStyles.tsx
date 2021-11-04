@@ -1,3 +1,5 @@
+import { PlusCircledIcon } from '@radix-ui/react-icons';
+import { Dispatch, SetStateAction } from 'react';
 import { styled } from '../stitchesConfig';
 
 export const Button = styled('button', {
@@ -78,3 +80,28 @@ export const IconButton = styled('button', {
   '&:hover': { backgroundColor: '$violet4' },
   '&:focus': { boxShadow: `0 0 0 2px $colors$violet7` },
 });
+
+type AddButtonProps = {
+  setShowAdd: Dispatch<SetStateAction<boolean>>;
+};
+
+export function AddButton({ setShowAdd }: AddButtonProps) {
+  return (
+    <Button
+      variant="green"
+      css={{
+        marginTop: '3rem',
+        marginBottom: '4rem',
+        padding: '6px 18px',
+        '& svg': {
+          width: 20,
+          height: 20,
+          marginRight: '8px',
+        },
+      }}
+      onClick={() => setShowAdd(true)}
+    >
+      <PlusCircledIcon /> Add an item
+    </Button>
+  );
+}
