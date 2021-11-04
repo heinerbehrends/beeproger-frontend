@@ -32,7 +32,6 @@ export default function ShowEditItem({
         }}
       >
         <UploadDialog item={item} items={items} setItems={setItems} />
-
         <EditDialog item={item} setItems={setItems} items={items} />
         <DeleteDialog item={item} setItems={setItems} items={items} />
       </Flex>
