@@ -12,6 +12,9 @@ export const Button = styled('button', {
   fontWeight: 500,
   height: 35,
   cursor: 'pointer',
+  '&:disabled': {
+    cursor: 'default',
+  },
 
   variants: {
     variant: {
@@ -33,6 +36,7 @@ export const Button = styled('button', {
       red: {
         backgroundColor: '$red4',
         color: '$red11',
+        border: '1px solid $colors$red8',
         '&:hover': { backgroundColor: '$red5' },
         '&:focus': { boxShadow: `0 0 0 2px $colors$red7` },
       },
@@ -41,6 +45,14 @@ export const Button = styled('button', {
         color: '$mauve11',
         '&:hover': { backgroundColor: '$mauve5' },
         '&:focus': { boxShadow: `0 0 0 2px $colors$mauve7` },
+      },
+      disabled: {
+        backgroundColor: '$mauve2',
+        color: '$mauve8',
+        border: '1px solid $mauve5',
+      },
+      hidden: {
+        visibility: 'hidden',
       },
     },
   },
