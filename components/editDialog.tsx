@@ -15,7 +15,6 @@ import {
   DialogClose,
 } from './dialogStyles';
 import { Item } from '../pages';
-import { styled } from '@stitches/react';
 import { Button, IconButton } from './buttonStyles';
 import { Fieldset, Input, Label, Message, TextArea } from './formStyles';
 import { Cross2Icon, InfoCircledIcon } from '@radix-ui/react-icons';
@@ -25,9 +24,15 @@ export type DialogProps = {
   item: Item;
   items: Item[];
   setItems: Dispatch<SetStateAction<Item[] | null>>;
+  setError: Dispatch<SetStateAction<string>>;
 };
 
-export default function EditDialog({ item, items, setItems }: DialogProps) {
+export default function EditDialog({
+  item,
+  items,
+  setItems,
+  setError,
+}: DialogProps) {
   const [title, setTitle] = useState(item.title);
   const [details, setDetails] = useState(item.details);
   const [message, setMessage] = useState('');
@@ -46,7 +51,12 @@ export default function EditDialog({ item, items, setItems }: DialogProps) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ title, details }),
-    });
+    })
+      .then((response) => {
+        if (response.status !== 200)
+          throw new Error('There was a server error. Please try again later.');
+      })
+      .catch((error) => setError(error.message));
   }
   function updateTitle(event: ChangeEvent<HTMLInputElement>) {
     setMessage('');

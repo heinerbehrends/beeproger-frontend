@@ -35,7 +35,23 @@ const DialogContent = styled(Content, contentStyles);
 const DialogTitle = styled(Title, titleStyles);
 const DialogDescription = styled(Description, descriptionStyles);
 
-export default function DeleteDialog({ setItems, items, item }: DialogProps) {
+export default function DeleteDialog({
+  setItems,
+  items,
+  item,
+  setError,
+}: DialogProps) {
+  function handleDelete() {
+    setItems([...items.filter((i) => i.id !== item.id)]);
+    fetch(`http://localhost/api/items/${item.id}`, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        if (response.status !== 200)
+          throw new Error('There was a server error. Please try again later.');
+      })
+      .catch((error) => setError(error.message));
+  }
   return (
     <Dialog>
       <Trigger asChild>
@@ -54,15 +70,7 @@ export default function DeleteDialog({ setItems, items, item }: DialogProps) {
             </Button>
           </Cancel>
           <Action asChild>
-            <Button
-              onClick={() => {
-                setItems([...items.filter((i) => i.id !== item.id)]);
-                fetch(`http://localhost/api/items/${item.id}`, {
-                  method: 'DELETE',
-                });
-              }}
-              variant="red"
-            >
+            <Button onClick={handleDelete} variant="red">
               Yes, delete item
             </Button>
           </Action>

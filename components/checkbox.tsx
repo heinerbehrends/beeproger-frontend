@@ -3,6 +3,7 @@ import { Root, Indicator, CheckedState } from '@radix-ui/react-checkbox';
 import { CheckIcon } from '@radix-ui/react-icons';
 import { Item } from '../pages';
 import { styled } from '@stitches/react';
+import { DialogProps } from './editDialog';
 
 type CheckboxProps = {
   item: Item;
@@ -32,7 +33,12 @@ const StyledIndicator = styled(Indicator, {
   },
 });
 
-export default function Checkbox({ item, items, setItems }: CheckboxProps) {
+export default function Checkbox({
+  item,
+  items,
+  setItems,
+  setError,
+}: DialogProps) {
   function handleCheckChange(checked: CheckedState) {
     // optimistic ui update
     setItems([
@@ -47,7 +53,13 @@ export default function Checkbox({ item, items, setItems }: CheckboxProps) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ isDone: checked ? 1 : 0 }),
-    });
+    })
+      .then((request) => {
+        if (request.status !== 200) {
+          throw new Error('There was a server error. Please try again later.');
+        }
+      })
+      .catch((error) => setError(error.message));
   }
 
   return (

@@ -1,10 +1,10 @@
-import { PlusCircledIcon } from '@radix-ui/react-icons';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import AddItemForm from '../components/addItemForm';
-import { Button } from '../components/buttonStyles';
+import { AddButton } from '../components/buttonStyles';
 import ShowEditItem from '../components/item';
 import { Heading, Container, ItemsContainer } from '../components/pageStyles';
+import ErrorMessage from '../components/ErrorMessage';
 
 export type Item = {
   id: number;
@@ -19,11 +19,21 @@ export type Item = {
 export default function Home() {
   const [items, setItems] = useState<Item[] | null>(null);
   const [showAdd, setShowAdd] = useState(false);
+  const [error, setError] = useState('');
+
   useEffect(() => {
     fetch('http://localhost/api/items')
-      .then((response) => response.json())
-      .then((items) => setItems(items));
-  }, []);
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          throw new Error('There was a server error. Please try again later.');
+        }
+      })
+      .then((items) => setItems(items))
+      .catch((error) => setError(error.message));
+    // refetch the data to undo opmitic ui updates on error
+  }, [error]);
   return (
     <div>
       <Head>
@@ -33,6 +43,7 @@ export default function Home() {
       </Head>
       <Heading>Items</Heading>
       <Container>
+        {error ? <ErrorMessage error={error} setError={setError} /> : null}
         <ItemsContainer>
           {items
             ? items.map((item) => (
@@ -41,6 +52,7 @@ export default function Home() {
                   item={item}
                   items={items}
                   setItems={setItems}
+                  setError={setError}
                 />
               ))
             : null}
@@ -50,26 +62,10 @@ export default function Home() {
             items={items!}
             setItems={setItems}
             setShowAdd={setShowAdd}
+            setError={setError}
           />
         ) : null}
-        {showAdd ? null : (
-          <Button
-            variant="green"
-            css={{
-              marginTop: '3rem',
-              marginBottom: '4rem',
-              padding: '6px 18px',
-              '& svg': {
-                width: 20,
-                height: 20,
-                marginRight: '8px',
-              },
-            }}
-            onClick={() => setShowAdd(true)}
-          >
-            <PlusCircledIcon /> Add an item
-          </Button>
-        )}
+        {showAdd ? null : <AddButton setShowAdd={setShowAdd} />}
       </Container>
     </div>
   );

@@ -15,7 +15,12 @@ import { Message } from './formStyles';
 import { Flex } from './pageStyles';
 import { DialogProps } from './editDialog';
 
-export default function UploadDialog({ item, items, setItems }: DialogProps) {
+export default function UploadDialog({
+  item,
+  items,
+  setItems,
+  setError,
+}: DialogProps) {
   const [foto, setFoto] = useState<File | null>(null);
   const [message, setMessage] = useState('');
 
@@ -31,10 +36,17 @@ export default function UploadDialog({ item, items, setItems }: DialogProps) {
       method: 'POST',
       body: formData,
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          throw new Error('There was a server error. Please try again later.');
+        }
+      })
       .then((item) =>
         setItems([...items.map((i) => (i.id === item.id ? item : i))])
-      );
+      )
+      .catch((error) => setError(error.message));
   }
 
   return (

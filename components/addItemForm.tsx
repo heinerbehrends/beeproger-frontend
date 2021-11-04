@@ -15,12 +15,14 @@ type AddItemFormProps = {
   setShowAdd: Dispatch<SetStateAction<boolean>>;
   items: Item[];
   setItems: Dispatch<SetStateAction<Item[] | null>>;
+  setError: Dispatch<SetStateAction<string>>;
 };
 
 export default function AddItemForm({
   setShowAdd,
   items,
   setItems,
+  setError,
 }: AddItemFormProps) {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
@@ -42,8 +44,15 @@ export default function AddItemForm({
         details: 'Add a more detailed description.',
       }),
     })
-      .then((response) => response.json())
-      .then((item) => setItems([...items, item]));
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          throw new Error('There was a server error. Please try again later.');
+        }
+      })
+      .then((item) => setItems([...items, item]))
+      .catch((error) => setError(error.message));
   }
 
   return (
