@@ -56,7 +56,7 @@ export default function Home() {
           <Button
             variant="green"
             css={{
-              marginTop: '2rem',
+              marginTop: '3rem',
               marginBottom: '4rem',
               padding: '6px 18px',
               '& svg': {
