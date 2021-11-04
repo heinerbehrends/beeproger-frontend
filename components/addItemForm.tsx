@@ -64,7 +64,6 @@ export default function AddItemForm({
             setMessage('');
             setTitle(event.target.value);
           }}
-          defaultValue=""
           autoFocus
           css={{ alignSelf: 'center', width: '90%' }}
         />
