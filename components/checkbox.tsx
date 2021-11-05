@@ -1,15 +1,8 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { CheckedState } from '@radix-ui/react-checkbox';
 import { CheckIcon } from '@radix-ui/react-icons';
-import { Item } from '../pages';
 import { DialogProps } from './editDialog';
 import { StyledCheckbox, StyledIndicator } from './checkboxStyles';
-
-type CheckboxProps = {
-  item: Item;
-  items: Item[];
-  setItems: Dispatch<SetStateAction<Item[] | null>>;
-};
 
 export default function Checkbox({
   item,
