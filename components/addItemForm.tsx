@@ -58,7 +58,10 @@ export default function AddItemForm({
           throw new Error('There was a server error. Please try again later.');
         }
       })
-      .then((item) => setItems([...items, item]))
+      .then((item) => {
+        setItems([...items, item]);
+        setError('');
+      })
       .catch((error) => setError(error.message));
   }
 
@@ -88,7 +91,7 @@ export default function AddItemForm({
               event.target.focus();
             }
 
-            if (title.length > 0 && title.length < maxTitleLength) {
+            if (title.length >= 0 && title.length < maxTitleLength) {
               setMessage('');
             }
             setTitle(event.target.value);
