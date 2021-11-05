@@ -17,6 +17,7 @@ type AddItemFormProps = {
   setItems: Dispatch<SetStateAction<Item[] | null>>;
   setError: Dispatch<SetStateAction<string>>;
 };
+export const maxTitleLength = 48;
 
 export default function AddItemForm({
   setShowAdd,
@@ -31,7 +32,9 @@ export default function AddItemForm({
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (title.length < 1) {
-      setMessage('Please enter a title');
+      return;
+    } else if (title.length > maxTitleLength) {
+      setMessage('Please enter a shorter title');
       return;
     }
     fetch('http://localhost/api/items', {
@@ -47,6 +50,10 @@ export default function AddItemForm({
       .then((response) => {
         if (response.status === 200) {
           return response.json();
+        } else if (response.status === 400) {
+          return response.json().then((response) => {
+            throw new Error(response.message);
+          });
         } else {
           throw new Error('There was a server error. Please try again later.');
         }
@@ -67,10 +74,23 @@ export default function AddItemForm({
             if (title.length < 1) {
               setMessage('Please enter a title.');
               event.target.focus();
+            } else if (title.length > maxTitleLength) {
+              setMessage('Please enter a shorter title.');
+              event.target.focus();
             }
           }}
           onChange={(event) => {
-            setMessage('');
+            if (title.length < 1) {
+              setMessage('Please enter a title.');
+              event.target.focus();
+            } else if (title.length > maxTitleLength) {
+              setMessage('Please enter a shorter title.');
+              event.target.focus();
+            }
+
+            if (title.length > 0 && title.length < maxTitleLength) {
+              setMessage('');
+            }
             setTitle(event.target.value);
           }}
           autoFocus
@@ -89,13 +109,11 @@ export default function AddItemForm({
               {message}
             </Message>
           ) : (
-            <>
-              <Button type="submit" variant={'green'}>
-                Create
-              </Button>
-              <Button onClick={() => setShowAdd(false)}>Cancel</Button>
-            </>
+            <Button type="submit" variant={'green'}>
+              Create
+            </Button>
           )}
+          <Button onClick={() => setShowAdd(false)}>Cancel</Button>
         </Flex>
       </GridForm>
     </>
