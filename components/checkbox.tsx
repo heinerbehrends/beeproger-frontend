@@ -1,37 +1,15 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import { Root, Indicator, CheckedState } from '@radix-ui/react-checkbox';
+import React, { Dispatch, SetStateAction } from 'react';
+import { CheckedState } from '@radix-ui/react-checkbox';
 import { CheckIcon } from '@radix-ui/react-icons';
 import { Item } from '../pages';
-import { styled } from '@stitches/react';
 import { DialogProps } from './editDialog';
+import { StyledCheckbox, StyledIndicator } from './checkboxStyles';
 
 type CheckboxProps = {
   item: Item;
   items: Item[];
   setItems: Dispatch<SetStateAction<Item[] | null>>;
 };
-
-export const StyledCheckbox = styled(Root, {
-  all: 'unset',
-  backgroundColor: 'white',
-  width: 60,
-  height: 60,
-  borderRadius: '50%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  boxShadow: '$outline, $soft',
-  cursor: 'pointer',
-  '&:focus': { boxShadow: `0 0 0 2px $colors$violet11` },
-  '&:hover': { backgroundColor: '$violet3' },
-});
-const StyledIndicator = styled(Indicator, {
-  color: '$green11',
-  '& svg': {
-    height: 40,
-    width: 40,
-  },
-});
 
 export default function Checkbox({
   item,
