@@ -43,7 +43,6 @@ export default function Home() {
       </Head>
       <Heading>Items</Heading>
       <Container>
-        {error ? <ErrorMessage error={error} setError={setError} /> : null}
         <ItemsContainer>
           {items
             ? items.map((item) => (
@@ -57,6 +56,7 @@ export default function Home() {
               ))
             : null}
         </ItemsContainer>
+        {error ? <ErrorMessage error={error} setError={setError} /> : null}
         {showAdd ? (
           <AddItemForm
             items={items!}
