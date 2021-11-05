@@ -10,10 +10,10 @@ export const ErrorMessageContainer = styled('span', {
   display: 'inline-flex',
   alignItems: 'center',
   backgroundColor: '$red4',
+  border: '1px solid $colors$red11',
   padding: '1rem 4rem',
   borderRadius: '4px',
-  marginTop: '16px',
-  marginBottom: '16px',
+  marginTop: '24px',
   '& svg': {
     width: 25,
     height: 25,
