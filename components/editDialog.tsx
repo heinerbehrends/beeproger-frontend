@@ -73,6 +73,9 @@ export default function EditDialog({
       setMessage('Please enter a shorter title.');
     }
   }
+  function selectText(event: FocusEvent<HTMLTextAreaElement>) {
+    event.target.select();
+  }
   return (
     <Dialog>
       <EditButton item={item} />
@@ -107,9 +110,7 @@ export default function EditDialog({
             rows={6}
             id="details"
             value={details}
-            onFocus={(event: FocusEvent<HTMLTextAreaElement>) =>
-              event.target.select()
-            }
+            onFocus={selectText}
             onChange={updateDetails}
           />
         </Fieldset>
