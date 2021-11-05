@@ -66,6 +66,13 @@ export default function EditDialog({
   function updateDetails(event: ChangeEvent<HTMLTextAreaElement>) {
     setDetails(event.target.value);
   }
+  function validateTitle() {
+    if (title.length < 1) {
+      setMessage('Please enter a title.');
+    } else if (title.length > maxTitleLength) {
+      setMessage('Please enter a shorter title.');
+    }
+  }
   return (
     <Dialog>
       <EditButton item={item} />
@@ -84,13 +91,7 @@ export default function EditDialog({
             value={title}
             onChange={updateTitle}
             onFocus={(event) => event.target.select()}
-            onBlur={() => {
-              if (title.length < 1) {
-                setMessage('Please enter a title.');
-              } else if (title.length > maxTitleLength) {
-                setMessage('Please enter a shorter title.');
-              }
-            }}
+            onBlur={validateTitle}
           />
         </Fieldset>
         <Fieldset>

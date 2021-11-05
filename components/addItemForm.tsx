@@ -1,6 +1,9 @@
 import React, {
   Dispatch,
   FormEvent,
+  FocusEvent,
+  ChangeEvent,
+  KeyboardEvent,
   SetStateAction,
   useRef,
   useState,
@@ -65,37 +68,40 @@ export default function AddItemForm({
       .catch((error) => setError(error.message));
   }
 
+  function closeOnEscape(event: KeyboardEvent) {
+    if (event.key === 'Escape') setShowAdd(false);
+  }
+  function validateOnBlur(event: FocusEvent<HTMLInputElement>) {
+    if (title.length < 1) {
+      setMessage('Please enter a title.');
+      event.target!.focus();
+    } else if (title.length > maxTitleLength) {
+      setMessage('Please enter a shorter title.');
+      event.target.focus();
+    }
+  }
+  function validateOnChange(event: ChangeEvent<HTMLInputElement>) {
+    if (title.length < 1) {
+      setMessage('Please enter a title.');
+      event.target.focus();
+    } else if (title.length > maxTitleLength) {
+      setMessage('Please enter a shorter title.');
+      event.target.focus();
+    }
+
+    if (title.length >= 0 && title.length < maxTitleLength) {
+      setMessage('');
+    }
+    setTitle(event.target.value);
+  }
   return (
     <>
       <GridForm onSubmit={handleSubmit}>
         <Input
           ref={input}
-          onKeyDown={(event) => {
-            if (event.key === 'Escape') setShowAdd(false);
-          }}
-          onBlur={(event) => {
-            if (title.length < 1) {
-              setMessage('Please enter a title.');
-              event.target.focus();
-            } else if (title.length > maxTitleLength) {
-              setMessage('Please enter a shorter title.');
-              event.target.focus();
-            }
-          }}
-          onChange={(event) => {
-            if (title.length < 1) {
-              setMessage('Please enter a title.');
-              event.target.focus();
-            } else if (title.length > maxTitleLength) {
-              setMessage('Please enter a shorter title.');
-              event.target.focus();
-            }
-
-            if (title.length >= 0 && title.length < maxTitleLength) {
-              setMessage('');
-            }
-            setTitle(event.target.value);
-          }}
+          onKeyDown={closeOnEscape}
+          onBlur={validateOnBlur}
+          onChange={validateOnChange}
           autoFocus
           css={{ alignSelf: 'center', width: '90%' }}
         />
