@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import {
   Dialog,
-  DialogTrigger,
   DialogOverlay,
   DialogContent,
   DialogTitle,
@@ -19,6 +18,8 @@ import { Button, IconButton } from './buttonStyles';
 import { Fieldset, Input, Label, Message, TextArea } from './formStyles';
 import { Cross2Icon, InfoCircledIcon } from '@radix-ui/react-icons';
 import { Flex } from './pageStyles';
+import EditButton from './editDialogButton';
+import { maxTitleLength } from './addItemForm';
 
 export type DialogProps = {
   item: Item;
@@ -67,14 +68,7 @@ export default function EditDialog({
   }
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button
-          disabled={!!item.isDone}
-          variant={item.isDone ? 'disabled' : 'violet'}
-        >
-          Edit the item
-        </Button>
-      </DialogTrigger>
+      <EditButton item={item} />
       <DialogOverlay />
       <DialogContent>
         <DialogTitle>Edit the item</DialogTitle>
@@ -91,7 +85,11 @@ export default function EditDialog({
             onChange={updateTitle}
             onFocus={(event) => event.target.select()}
             onBlur={() => {
-              if (title.length < 1) setMessage('Please enter a title.');
+              if (title.length < 1) {
+                setMessage('Please enter a title.');
+              } else if (title.length > maxTitleLength) {
+                setMessage('Please enter a shorter title.');
+              }
             }}
           />
         </Fieldset>
