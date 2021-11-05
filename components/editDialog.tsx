@@ -73,7 +73,9 @@ export default function EditDialog({
       setMessage('Please enter a shorter title.');
     }
   }
-  function selectText(event: FocusEvent<HTMLTextAreaElement>) {
+  function selectText(
+    event: FocusEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) {
     event.target.select();
   }
   return (
@@ -93,7 +95,7 @@ export default function EditDialog({
             id="title"
             value={title}
             onChange={updateTitle}
-            onFocus={(event) => event.target.select()}
+            onFocus={selectText}
             onBlur={validateTitle}
           />
         </Fieldset>
@@ -106,7 +108,7 @@ export default function EditDialog({
           </Label>
           <TextArea
             as="textarea"
-            css={{ height: 'fit-content', lineHeight: 1.5, paddingTop: '10px' }}
+            // css={{ height: 'fit-content', lineHeight: 1.5, paddingTop: '10px' }}
             rows={6}
             id="details"
             value={details}
