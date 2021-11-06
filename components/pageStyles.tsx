@@ -19,3 +19,7 @@ export const Heading = styled('h1', {
 export const Flex = styled('div', {
   display: 'flex',
 });
+export const ButtonContainer = styled(Flex, {
+  marginTop: 25,
+  justifyContent: 'flex-end',
+});

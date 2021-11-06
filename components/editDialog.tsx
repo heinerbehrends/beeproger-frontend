@@ -1,10 +1,4 @@
-import React, {
-  ChangeEvent,
-  FocusEvent,
-  Dispatch,
-  SetStateAction,
-  useState,
-} from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import {
   Dialog,
   DialogOverlay,
@@ -15,11 +9,12 @@ import {
 } from './dialogStyles';
 import { Item } from '../pages';
 import { Button, IconButton } from './buttonStyles';
-import { Fieldset, Input, Label, Message, TextArea } from './formStyles';
+import { Message } from './formStyles';
 import { Cross2Icon, InfoCircledIcon } from '@radix-ui/react-icons';
-import { Flex } from './pageStyles';
+import { ButtonContainer } from './pageStyles';
 import EditButton from './editDialogButton';
-import { maxTitleLength } from './addItemForm';
+import DetailsInput from './detailsInput';
+import TitleInput from './titleInput';
 
 export type DialogProps = {
   item: Item;
@@ -59,25 +54,6 @@ export default function EditDialog({
       })
       .catch((error) => setError(error.message));
   }
-  function updateTitle(event: ChangeEvent<HTMLInputElement>) {
-    setMessage('');
-    setTitle(event.target.value);
-  }
-  function updateDetails(event: ChangeEvent<HTMLTextAreaElement>) {
-    setDetails(event.target.value);
-  }
-  function validateTitle() {
-    if (title.length < 1) {
-      setMessage('Please enter a title.');
-    } else if (title.length > maxTitleLength) {
-      setMessage('Please enter a shorter title.');
-    }
-  }
-  function selectText(
-    event: FocusEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) {
-    event.target.select();
-  }
   return (
     <Dialog>
       <EditButton item={item} />
@@ -88,47 +64,21 @@ export default function EditDialog({
           Make changes to the item and upload an image. Click save when
           you&apos;re done.
         </DialogDescription>
-        <Fieldset>
-          <Label htmlFor="title">Title</Label>
-          <Input
-            required
-            id="title"
-            value={title}
-            onChange={updateTitle}
-            onFocus={selectText}
-            onBlur={validateTitle}
-          />
-        </Fieldset>
-        <Fieldset>
-          <Label
-            css={{ alignSelf: 'flex-start', marginTop: '12px' }}
-            htmlFor="details"
-          >
-            Details
-          </Label>
-          <TextArea
-            as="textarea"
-            // css={{ height: 'fit-content', lineHeight: 1.5, paddingTop: '10px' }}
-            rows={6}
-            id="details"
-            value={details}
-            onFocus={selectText}
-            onChange={updateDetails}
-          />
-        </Fieldset>
+        <TitleInput title={title} setTitle={setTitle} setMessage={setMessage} />
+        <DetailsInput details={details} setDetails={setDetails} />
         {message ? (
           <Message>
             <InfoCircledIcon />
             {message}
           </Message>
         ) : (
-          <Flex css={{ marginTop: 25, justifyContent: 'flex-end' }}>
+          <ButtonContainer>
             <DialogClose asChild onClick={submitTitleDetails}>
               <Button aria-label="Close" variant="green">
                 Save changes
               </Button>
             </DialogClose>
-          </Flex>
+          </ButtonContainer>
         )}
         <DialogClose asChild>
           <IconButton>
