@@ -8,13 +8,13 @@ import {
   DialogClose,
 } from './dialogStyles';
 import { Item } from '../pages';
-import { Button, IconButton } from './buttonStyles';
+import { IconButton } from './buttonStyles';
 import { Message } from './formStyles';
 import { Cross2Icon, InfoCircledIcon } from '@radix-ui/react-icons';
-import { ButtonContainer } from './pageStyles';
 import EditButton from './editDialogButton';
 import DetailsInput from './detailsInput';
 import TitleInput from './titleInput';
+import EditSaveButton from './editSaveButton';
 
 export type DialogProps = {
   item: Item;
@@ -72,13 +72,7 @@ export default function EditDialog({
             {message}
           </Message>
         ) : (
-          <ButtonContainer>
-            <DialogClose asChild onClick={submitTitleDetails}>
-              <Button aria-label="Close" variant="green">
-                Save changes
-              </Button>
-            </DialogClose>
-          </ButtonContainer>
+          <EditSaveButton submitFunction={submitTitleDetails} />
         )}
         <DialogClose asChild>
           <IconButton>
