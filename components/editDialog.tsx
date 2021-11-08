@@ -1,20 +1,19 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 import {
   Dialog,
   DialogOverlay,
   DialogContent,
   DialogTitle,
   DialogDescription,
-  DialogClose,
 } from './dialogStyles';
 import { Item } from '../pages';
-import { IconButton } from './buttonStyles';
 import { Message } from './formStyles';
-import { Cross2Icon, InfoCircledIcon } from '@radix-ui/react-icons';
+import { InfoCircledIcon } from '@radix-ui/react-icons';
 import EditButton from './editDialogButton';
 import DetailsInput from './detailsInput';
 import TitleInput from './titleInput';
 import EditSaveButton from './editSaveButton';
+import EditCrossButton from './editCrossButton';
 
 export type DialogProps = {
   item: Item;
@@ -32,6 +31,7 @@ export default function EditDialog({
   const [title, setTitle] = useState(item.title);
   const [details, setDetails] = useState(item.details);
   const [message, setMessage] = useState('');
+  const oldTitleDetails = useRef({ title: item.title, details: item.details });
 
   function submitTitleDetails() {
     if (title.length < 1) {
@@ -52,7 +52,20 @@ export default function EditDialog({
         if (response.status !== 200)
           throw new Error('There was a server error. Please try again later.');
       })
-      .catch((error) => setError(error.message));
+      .catch((error) => {
+        setError(error.message);
+        // unset optimistic-ui update
+        const oldTitle = oldTitleDetails.current.title;
+        const oldDetails = oldTitleDetails.current.details;
+        console.log(oldTitle);
+        setTitle(oldTitle);
+        setDetails(oldDetails);
+        setItems([
+          ...items.map((i) =>
+            i.id !== item.id ? i : { ...item, title, details }
+          ),
+        ]);
+      });
   }
   return (
     <Dialog>
@@ -74,11 +87,7 @@ export default function EditDialog({
         ) : (
           <EditSaveButton submitFunction={submitTitleDetails} />
         )}
-        <DialogClose asChild>
-          <IconButton>
-            <Cross2Icon />
-          </IconButton>
-        </DialogClose>
+        <EditCrossButton />
       </DialogContent>
     </Dialog>
   );
