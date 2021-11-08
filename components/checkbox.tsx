@@ -30,7 +30,15 @@ export default function Checkbox({
           throw new Error('There was a server error. Please try again later.');
         }
       })
-      .catch((error) => setError(error.message));
+      .catch((error) => {
+        setError(error.message);
+        // undo optimistic ui update
+        setItems([
+          ...items.map((i) =>
+            i.id !== item.id ? i : { ...item, isDone: item.isDone }
+          ),
+        ]);
+      });
   }
 
   return (
