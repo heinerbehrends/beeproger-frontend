@@ -4,7 +4,7 @@ import AddItemForm from '../components/addItemForm';
 import { AddButton } from '../components/buttonStyles';
 import ShowEditItem from '../components/item';
 import { Heading, Container, ItemsContainer } from '../components/pageStyles';
-import ErrorMessage from '../components/ErrorMessage';
+import ErrorMessage from '../components/errorMessage';
 
 export type Item = {
   id: number;
