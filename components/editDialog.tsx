@@ -41,7 +41,7 @@ export default function EditDialog({
     setItems([
       ...items.map((i) => (i.id !== item.id ? i : { ...item, title, details })),
     ]);
-    fetch(`http://localhost/api/itms/${item.id}`, {
+    fetch(`http://localhost/api/items/${item.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
