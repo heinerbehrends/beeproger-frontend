@@ -1,39 +1,14 @@
-import React, { ReactNode } from 'react';
-import {
-  Root,
-  Overlay,
-  Trigger,
-  Content,
-  Title,
-  Description,
-  Cancel,
-  Action,
-} from '@radix-ui/react-alert-dialog';
-import {
-  overlayStyles,
-  contentStyles,
-  titleStyles,
-  descriptionStyles,
-} from './dialogStyles';
-import { styled } from '../stitchesConfig';
+import React, { useRef } from 'react';
+import { Trigger, Cancel, Action } from '@radix-ui/react-alert-dialog';
 import { Button } from './buttonStyles';
 import { Flex } from './pageStyles';
 import { DialogProps } from './editDialog';
-
-const StyledOverlay = styled(Overlay, overlayStyles);
-
-function Dialog({ children, ...props }: { children: ReactNode }) {
-  return (
-    <Root {...props}>
-      <StyledOverlay />
-      {children}
-    </Root>
-  );
-}
-
-const DialogContent = styled(Content, contentStyles);
-const DialogTitle = styled(Title, titleStyles);
-const DialogDescription = styled(Description, descriptionStyles);
+import {
+  DeleteDialogRoot,
+  DeleteDialogContent,
+  DeleteDialogDescription,
+  DeleteDialogTitle,
+} from './deleteDialogStyles';
 
 export default function DeleteDialog({
   setItems,
@@ -41,7 +16,10 @@ export default function DeleteDialog({
   item,
   setError,
 }: DialogProps) {
+  const itemToRestore = useRef(item);
+
   function handleDelete() {
+    // optimistic ui update
     setItems([...items.filter((i) => i.id !== item.id)]);
     fetch(`http://localhost/api/items/${item.id}`, {
       method: 'DELETE',
@@ -50,19 +28,23 @@ export default function DeleteDialog({
         if (response.status !== 200)
           throw new Error('There was a server error. Please try again later.');
       })
-      .catch((error) => setError(error.message));
+      .catch((error) => {
+        setError(error.message);
+        // undo optimistic ui update
+        setItems([...items, itemToRestore.current]);
+      });
   }
   return (
-    <Dialog>
+    <DeleteDialogRoot>
       <Trigger asChild>
         <Button>Delete item</Button>
       </Trigger>
-      <DialogContent>
-        <DialogTitle>Are you absolutely sure?</DialogTitle>
-        <DialogDescription>
+      <DeleteDialogContent>
+        <DeleteDialogTitle>Are you absolutely sure?</DeleteDialogTitle>
+        <DeleteDialogDescription>
           This action cannot be undone. This will permanently delete the item
           from our servers.
-        </DialogDescription>
+        </DeleteDialogDescription>
         <Flex css={{ justifyContent: 'flex-end' }}>
           <Cancel asChild>
             <Button variant="mauve" css={{ marginRight: 25 }}>
@@ -75,7 +57,7 @@ export default function DeleteDialog({
             </Button>
           </Action>
         </Flex>
-      </DialogContent>
-    </Dialog>
+      </DeleteDialogContent>
+    </DeleteDialogRoot>
   );
 }
