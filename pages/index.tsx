@@ -32,8 +32,7 @@ export default function Home() {
       })
       .then((items) => setItems(items))
       .catch((error) => setError(error.message));
-    // refetch the data to undo opmitic ui updates on error
-  }, [error]);
+  }, []);
   return (
     <div>
       <Head>
